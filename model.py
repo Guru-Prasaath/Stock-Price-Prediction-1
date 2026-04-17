@@ -26,17 +26,13 @@ today's price depends on patterns from previous days.
 """
 
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense, Dropout, Input
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import EarlyStopping
 
 
 # ─────────────────────────────────────────────
 # 1. BUILD LSTM MODEL
 # ─────────────────────────────────────────────
 
-def build_model(sequence_length: int = 60) -> Sequential:
+def build_model(sequence_length: int = 60):
     """
     Build and compile the LSTM neural network.
     
@@ -98,6 +94,10 @@ def build_model(sequence_length: int = 60) -> Sequential:
     Returns:
         Sequential: Compiled Keras model ready for training
     """
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import LSTM, Dense, Dropout, Input
+    from tensorflow.keras.optimizers import Adam
+
     model = Sequential([
         # Input specification — tells the model what shape of data to expect
         Input(shape=(sequence_length, 1)),
@@ -185,6 +185,8 @@ def train_model(model, X_train: np.ndarray, y_train: np.ndarray,
     Returns:
         dict: Training history containing loss values per epoch
     """
+    from tensorflow.keras.callbacks import EarlyStopping
+
     # Early stopping: stop training if no improvement for 5 consecutive epochs
     # 'patience=5' means: wait 5 epochs before giving up
     # 'restore_best_weights=True' means: use the model from the best epoch

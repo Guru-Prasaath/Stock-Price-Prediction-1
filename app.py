@@ -31,7 +31,6 @@ from utils import (
     preprocess_data, create_sequences, split_data,
     inverse_transform, format_large_number
 )
-from model import build_model, train_model, predict_prices, calculate_metrics
 
 
 # ─────────────────────────────────────────────
@@ -57,7 +56,8 @@ def load_css():
         with open(css_path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-load_css()
+# Disabled temporarily while debugging blank-screen rendering issues.
+# load_css()
 
 
 # ─────────────────────────────────────────────
@@ -326,7 +326,10 @@ if should_load_data:
 stock_data = st.session_state.stock_data
 stock_info = st.session_state.stock_info
 
-if stock_data is None or stock_info is None:
+has_loaded_data = stock_data is not None and stock_info is not None
+
+if not has_loaded_data:
+    page = None
     st.markdown("""
     <div style="text-align: center; padding: 90px 20px;">
         <div style="font-size: 4rem; margin-bottom: 16px;">📈</div>
@@ -351,6 +354,8 @@ if train_button:
     status_text = st.empty()
     
     try:
+        from model import build_model, train_model, predict_prices, calculate_metrics
+
         # Step 1: Preprocess data (20%)
         status_text.markdown("""
         <div class="info-box loading-pulse">
