@@ -1,0 +1,49 @@
+# StockSense default experiment configuration.
+# Used by both the Streamlit app and `python -m scripts.train`.
+
+data:
+  ticker: AAPL
+  period_years: 5
+  market_ticker: SPY       # market context features (set to null to disable)
+  vix_ticker: ^VIX         # volatility-regime features (set to null to disable)
+  cache_dir: data/cache
+  cache_ttl_hours: 12
+
+evaluation:
+  n_folds: 5               # walk-forward (expanding window) folds
+  initial_train_frac: 0.6  # share of history used to train the first fold
+
+models:
+  drift:
+    window: 20
+  ridge:
+    alpha: 10.0
+  arima:
+    order: [1, 0, 1]
+  xgboost:
+    n_estimators: 400
+    max_depth: 3
+    learning_rate: 0.03
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 10
+    reg_lambda: 5.0
+    early_stopping_rounds: 30
+  lstm:
+    sequence_length: 30
+    units: [64, 32]
+    dropout: 0.2
+    epochs: 40
+    batch_size: 32
+    patience: 6
+    learning_rate: 0.001
+
+forecast:
+  horizon: 10              # trading days ahead
+  calibration_frac: 0.2    # tail of history held out to calibrate intervals
+  levels: [0.8, 0.95]
+
+backtest:
+  cost_bps: 5.0            # one-way transaction cost, basis points
+  threshold: 0.0           # min predicted log-return to take a position
+  allow_short: false

@@ -1,7 +1,16 @@
-streamlit>=1.30.0
-yfinance>=0.2.30
-tensorflow>=2.15.0
-scikit-learn>=1.3.0
-plotly>=5.18.0
-pandas>=2.1.0
-numpy>=1.24.0
+# Core app + pipeline
+streamlit>=1.50
+yfinance>=0.2.50
+pandas>=2.1
+numpy>=1.26
+scipy>=1.11
+scikit-learn>=1.4
+statsmodels>=0.14
+xgboost>=2.0          # macOS: requires `brew install libomp`
+tensorflow>=2.16      # LSTM model (Keras 3)
+plotly>=5.20
+pyarrow>=14           # Parquet data cache
+pyyaml>=6.0
+
+# Experiment tracking (python -m scripts.train --track)
+mlflow>=2.10
